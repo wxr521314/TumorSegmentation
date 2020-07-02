@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="77c47502-59f6-436e-ba64-f54a70d12ca5" name="TumorSegmentation" url="http://192.168.0.145">
+        <fileTransfer host="192.168.0.145" port="22" rootFolder="/home/jh/LiverTumorSegmentation" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="4fc4e40a-9d88-4505-866e-768a9e0b7c3d" name="RTX2080Ti" url="http://223.84.134.45">
+        <fileTransfer host="223.84.134.45" port="18881" rootFolder="/jh" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="18881" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
