@@ -4,7 +4,7 @@
  @author: Jiang Hui
  @language:Python 3.7.2 [GCC 7.3.0] :: Anaconda, Inc. on linux
  @time: 12/25/19 4:44 PM
- @desc: 对Dataset类进行封装，创建肝脏分割网络的训练集
+ @desc: 对Dataset类进行封装，创建肝脏分割网络的训练集和肿瘤分割网络的训练集
 """
 import os
 from config.configuration import DefaultConfig

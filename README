@@ -1,0 +1,63 @@
+
+
+   代码架构：
+
+   - checkpoints  此目录用于存储每轮epoch训练好的模型参数，防止训练终止可以恢复训练
+
+   - config
+       - configuration.py 配置文件，包含文件路径、数据预处理、模型超参数和训练参数等
+
+   - data
+       - dataset.py 对Dataset类进行封装，在单网络训练时，用于肝脏训练集或肿瘤训练集的数据加载
+                    要注意第29行和第57行的sitk.ReadImage()中的数据类型，一个是sitkInt16
+                    另一个是sitkFloat32，原因在于肿瘤数据集在预处理时进行了归一化，如果数据
+                    类型还是设为Int的话，导致加载的矩阵全是0
+       - dataset2.py 对Dataset类进行封装，用于级联网络训练时的数据加载，如果不尝试级联网络，
+                     可以不使用此文件。
+
+   - loss
+       - DiceLoss.py  本项目主要使用的损失函数
+       - FocalLoss.py 其他图像分割损失函数，效果不明，可自行上网搜索具体代码实现（下同）
+       - LovaszLoss.py
+       - TverskyLoss.py
+
+   - models
+       - BasicModule.py 封装了nn.Module，主要提供了save和load两个操作模型的方法
+       - CascadeResUNet.py 用于级联网络训练，根据判断"liver_seg"和"tumor_seg"，
+                           将此模型分为级联网络中的两个子网络（它不是两个网络的集合，而是单个网络!）
+       - DenseUNet.py 去除了空洞卷积的DenseUNet，用于模型对比
+       - DilatedDenseUNet.py 包含空洞卷积的DenseUNet
+       - NaiveUNet.py 去除了空洞卷积和Dense block的UNet，用于模型对比
+       - ResUNet.py 本项目使用最多、效果最佳的网络，在实际应用中可考虑使用此网络进行训练
+       - UNet3D.py 论文<3D UNet>的PyTorch实现，训练时间长、显存开销大，效果也不好
+
+   - utils
+       - visualize.py PyTorch一般采用visdom模块进行可视化，该文件是对常用的方法进行了封装
+
+   - preprocess_dataset.py 生成级联网络的训练集，如果只进行单网络训练，不必使用此文件
+   - preprocess_liver_seg.py 生成肝脏分割的训练集，用于单网络训练
+   - preprocess_tumor_seg.py 生成肿瘤分割的训练集，用于单网络训练
+   - train.py 本项目最主要的训练文件，包含肝脏分割网络训练的代码，在控制台运行： python train.py train_liver_net
+              还包含肿瘤分割网络训练的代码，并嵌套了一个val_tumor_net()，每完成1个epoch的训练，便在验证集上测试一次，
+              并可视化验证集上的精度，主要是想尝试early_stopping策略，如果嫌弃时间太久，建议直接屏蔽此行代码
+   - train_cascade_net.py 级联网络训练代码，在控制台运行： python train_cascade_net.py train_cascade_net
+   - val_cascade_net.py 验证级联网络性能代码
+   - val_liver_net.py 验证单网络训练时，肝脏分割网络的精度，直接在控制台运行：python val_liver_net.py
+   - val_tumor_net.py 验证单网络训练时，肿瘤分割网络的精度，直接在控制台运行：python val_tumor_net.py
+
+   实验流程：
+      数据预处理 -> 模型训练 -> 模型评估
+      在我的毕业论文中，有整个实验的详细介绍，可阅读论文中实验环节，进行了解。
+
+   可能存在的坑：
+      1.模型训练代码中，当时为了实验方便，继承configuration.py类之后，修改了默认配置文件中的参数
+        如在train.py中，opt = DefaultConfig()，设置 opt.device = 1，就修改了模型训练的GPU编号
+
+      2.级联网络的训练效果不佳，为了实验精度，建议只考虑单网络的训练，即二步法，即项目中关于Cascade-Net相关的
+        部分可暂不尝试，或者寻找更好的级联方案
+
+   个人建议：
+      1.如果对PyTorch不是特别了解的话，对此项目的架构理解起来较有难度，可先尝试 https://github.com/chenyuntc/pytorch-best-practice
+        以及我个人根据书中代码实现的猫狗识别：https://github.com/jh0905/DogCatProject
+
+      2.本项目是基于https://github.com/assassint2017/MICCAI-LITS2017进行扩展，阅读本项目中不理解的地方，可参考该项目的介绍。

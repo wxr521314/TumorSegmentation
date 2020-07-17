@@ -207,7 +207,5 @@ class CascadeResUNet(BasicModule):
         out15 = F.dropout(out15, 0.3, self.training)
         output4 = self.output4(out15)
         
-        if self.training:  # 训练阶段，out15是喂给下一个神经网络的数据，output是当前神经网络的输出，即分割结果
-            return out15, output4
-        else:
-            return out15, output4
+        # 训练阶段，out15是喂给下一个神经网络的数据，output是当前神经网络的输出，即分割结果
+        return out15, output4

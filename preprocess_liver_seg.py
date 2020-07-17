@@ -147,7 +147,9 @@ if __name__ == '__main__':
     # 随机划分训练集和验证集
     volumes_train, volumes_val = split_train_val()
 
-    # 持久化验证集的文件名列表，供后面测试调用，这里是覆盖填写模式
+    # 持久化验证集的文件名列表，供后面测试调用，这里是覆盖填写模式。
+    # 之前在两个服务器上训练，随机划分的训练集不一致，为了保持一致，将上个服务器划分的名单保存了下来
+    # 在自己的服务器上训练的时候，可以注释下面两行代码
     with open('data/val_volumes_list.txt', 'wb') as f:
         pickle.dump(volumes_val, f)
 
