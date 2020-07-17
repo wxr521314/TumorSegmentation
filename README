@@ -60,4 +60,4 @@
       1.如果对PyTorch不是特别了解的话，对此项目的架构理解起来较有难度，可先尝试 https://github.com/chenyuntc/pytorch-best-practice
         以及我个人根据书中代码实现的猫狗识别：https://github.com/jh0905/DogCatProject
 
-      2.本项目是基于https://github.com/assassint2017/MICCAI-LITS2017进行扩展，阅读本项目中不理解的地方，可参考该项目的介绍。
+      2.本项目是基于https://github.com/assassint2017/MICCAI-LITS2017 进行扩展，阅读本项目中不理解的地方，可参考该项目的介绍。
